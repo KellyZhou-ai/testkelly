@@ -103,11 +103,13 @@ main()
 echo "start log collecting"
 sleep 1s
 
-if [ $(ps -ef | grep himds | grep -v grep|wc -l) != "0" ]; then
+if [ $(find /var/lib/waagent/ -type d -name Microsoft.Azure.Monitor.AzureMonitorLinuxAgent-1.10* | wc -l) != "0" ]; then
+         echo "Detected old AMA version, please upgrade the extention version first"
+elif [ $(ps -ef | grep himds | grep -v grep|wc -l) != "0" ]; then
          echo "Arc service detected, collecting logs for Azure Arc"
          ps -ef | grep himds | grep -v grep
          sleep 5s
-          Arc_log_collector
+         Arc_log_collector
 else
           echo "No Arc service detected, collecting logs for azure VM"
           sleep 5s
