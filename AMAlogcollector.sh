@@ -102,10 +102,7 @@ main()
 {
 echo "start log collecting"
 sleep 1s
-
-if [ $(find /var/lib/waagent/ -type d -name Microsoft.Azure.Monitor.AzureMonitorLinuxAgent-1.10* | wc -l) != "0" ]; then
-         echo "Detected old AMA version, please upgrade the extention version first"
-elif [ $(ps -ef | grep himds | grep -v grep|wc -l) != "0" ]; then
+if [ $(ps -ef | grep himds | grep -v grep|wc -l) != "0" ]; then
          echo "Arc service detected, collecting logs for Azure Arc"
          ps -ef | grep himds | grep -v grep
          sleep 5s
@@ -121,22 +118,28 @@ pack_logs
 
 list_ama_process
 if [ $(ps -ef | grep mdsd | grep -v grep|wc -l) == "0" ]; then
-        read -p "No mdsd process detected, would you like to restart azuremonitoragent(Y/N):" ifyes
-        if [ "$ifyes" == "Y" ]; then
-                systemctl start azuremonitoragent && systemctl enable azuremonitoragent 1>/dev/null
-                echo "waiting for 10 seconds"
-                countdown 00:00:10
-                main
-        elif [ "$ifyes" == "N" ]; then
-                main
-        else
-                echo "please enter Y/N"
+        if [ $(find /var/lib/waagent/ -type d -name Microsoft.Azure.Monitor.AzureMonitorLinuxAgent-1.10* | wc -l) != "0" ]; then
+        echo "Detected old AMA version, please upgrade the extention version first"
+        else read -p "No mdsd process detected, would you like to restart azuremonitoragent(Y/N):" ifyes
+                if [ "$ifyes" == "Y" ]; then
+                        systemctl start azuremonitoragent && systemctl enable azuremonitoragent 1>/dev/null
+                        echo "waiting for 10 seconds"
+                        countdown 00:00:10
+                        main
+                elif [ "$ifyes" == "N" ]; then
+                        main
+                else
+                        echo "please enter Y/N"
+                fi
         fi
 elif [ $(ps -ef | grep telegraf | grep -v grep|wc -l) == "0" ]; then
-        echo "No telegraf process detected, check if there is DCR for preformance counter collection"
-        sleep 5s
-        if [ $(cat /etc/opt/microsoft/azuremonitoragent/config-cache/configchunks/*.json | grep -i counters | wc -l) != "0" ]; then
-                read -p "Got perf DCR, but no running telegraf. Would you like to re-eable telegraf(Y/N):" ifyes
+        if [ $(find /var/lib/waagent/ -type d -name Microsoft.Azure.Monitor.AzureMonitorLinuxAgent-1.10* | wc -l) != "0" ]; then
+                echo "Detected old AMA version, please upgrade the extention version first"
+        else
+                echo "No telegraf process detected, check if there is DCR for preformance counter collection"
+                sleep 5s
+              if [ $(cat /etc/opt/microsoft/azuremonitoragent/config-cache/configchunks/*.json | grep -i counters | wc -l) != "0" ]; then
+                 read -p "Got perf DCR, but no running telegraf. Would you like to re-eable telegraf(Y/N):" ifyes
                         if [ "$ifyes" == "Y" ]; then
                                 systemctl start metrics-sourcer.service && systemctl enable metrics-sourcer.service 1>/dev/null
                                 systemctl start metrics-extension.service && systemctl enable metrics-extension.service 1>/dev/nul
@@ -148,16 +151,19 @@ elif [ $(ps -ef | grep telegraf | grep -v grep|wc -l) == "0" ]; then
                         else
                                 echo "please enter Y/N"
                         fi
-        else
+             else
                 echo "No Perf DCR found. No telegraf running is expected"
                 sleep 5s
                 main
+             fi
         fi
 
 else
-        echo "Expected processes are running"
-        main
-
-
+        if [ $(find /var/lib/waagent/ -type d -name Microsoft.Azure.Monitor.AzureMonitorLinuxAgent-1.10* | wc -l) != "0" ]; then
+                echo "Detected old AMA version, please upgrade the extention version first"
+        else
+                echo "Expected processes are running"
+                main
+        fi
 
 fi
