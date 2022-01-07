@@ -17,6 +17,7 @@ Bash environment
 4. Check if it is an Arc server.
 5. For azure VM, collect:
 -Waagent log
+
 -AMA extention log
 -MDSD log
 -DCR config
