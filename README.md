@@ -12,10 +12,11 @@ Bash environment
 
 ## Function
 1. Check your running process for AMA.
-2. Let you choose if you want to start/enable MDSD process if there is no running MDSD process.
-3. Let you choose if you want to enable telegraf if there is no running telegraf process when performance counter DCR detected.
-4. Check if it is an Arc server.
-5. For azure VM, collect:
+2. Check if the AMA is using old version AMA for Linux 1.10*. If so,need to upgrade extention first. 
+3. Let you choose if you want to start/enable MDSD process if there is no running MDSD process.
+4. Let you choose if you want to enable telegraf if there is no running telegraf process when performance counter DCR detected.
+5. Check if it is an Arc server.
+6. For azure VM, collect:
 
    -Waagent log
    
