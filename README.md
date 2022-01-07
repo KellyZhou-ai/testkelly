@@ -8,7 +8,7 @@ https://docs.microsoft.com/en-us/azure/azure-monitor/agents/azure-monitor-agent-
 Bash environment
 
 ## Usage
-`wget https://github.com/KellyZhou-ai/testkelly/blob/main/AMAlogcollector.sh && bash AMAlogcollector.sh`
+`wget https://raw.githubusercontent.com/KellyZhou-ai/testkelly/main/AMAlogcollector.sh && bash AMAlogcollector.sh`
 
 ## Function
 1. Check your running process for AMA.
