@@ -16,15 +16,24 @@ Bash environment
 3. Let you choose if you want to enable telegraf if there is no running telegraf process when performance counter DCR detected.
 4. Check if it is an Arc server.
 5. For azure VM, collect:
--Waagent log
 
--AMA extention log
--MDSD log
--DCR config
--Configuration & Status
+   -Waagent log
+   
+   -AMA extention log
+   
+   -MDSD log
+   
+   -DCR config
+   
+   -Configuration & Status
 6. For azure arc VM, collect:
--GC extention log
--AMA extention log
--MDSD log
--DCR config
--Configuration & Status
+
+   -GC extention log
+   
+   -AMA extention log
+   
+   -MDSD log
+   
+   -DCR config
+   
+   -Configuration & Status
